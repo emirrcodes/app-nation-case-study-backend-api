@@ -11,8 +11,6 @@ export class UsersController {
   @Roles('ADMIN')
   getAllUsers(@Req() req: RequestWithUser) {
     const user = req.user;
-    console.log('Token ile gelen user:', user);
-
     return {
       message: 'Bu liste sadece adminler için.',
       requestedBy: user,

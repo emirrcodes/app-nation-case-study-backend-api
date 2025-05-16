@@ -16,16 +16,11 @@ export class WeatherService {
   ) {}
 
   async fetchWeather(city: string, userId: string) {
-    await this.cache.set('redis_test', 'from redis-yet');
-    const check = await this.cache.get('redis_test');
-    console.log('[REDIS-TEST]', check);
-
     const cacheKey = city.toLowerCase().trim();
 
     const cached = await this.cache.get(cacheKey);
     if (cached) {
       console.log(`[CACHE] Found for city: ${city}`);
-      console.log(cached);
       return cached;
     }
 
