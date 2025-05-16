@@ -24,8 +24,6 @@ export class AuthService {
     if (adminKey && adminKey === adminSecret) {
       role = 'ADMIN';
     }
-    console.log('adminKey: ', adminKey);
-    console.log('adminSecret: ', adminSecret);
 
     const user = await this.prisma.user.create({
       data: {
