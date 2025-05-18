@@ -1,98 +1,94 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Weather API Backend – Backend Engineer Case Study ☁️⚡
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a backend application built with NestJS, Prisma, and Redis to demonstrate API integration, caching, and role-based access control.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- 🔐 JWT-based authentication with `USER` and `ADMIN` roles
+- ☁️ OpenWeather API integration to fetch live weather data
+- ⚡ Redis caching via Upstash to reduce redundant API calls
+- 🧾 Logging user queries to PostgreSQL via Prisma
+- 🔐 Role-based route protection (e.g., only admins see all queries)
+- 🧠 `adminkey` query param to allow admin-level user creation via Postman
+- 📦 Modular, clean, and maintainable code structure
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 🛠️ Tech Stack
+
+- NestJS (TypeScript)
+- PostgreSQL (Railway)
+- Prisma ORM
+- Redis (Upstash)
+- OpenWeather API
+- JWT Auth
+
+---
+
+## 📂 Endpoints
+
+| Method | URL                            | Access      | Description                      |
+|--------|--------------------------------|-------------|----------------------------------|
+| POST   | `/auth/register`               | Public      | Create USER                      |
+| POST   | `/auth/register?adminkey=XYZ`  | Public+Key  | Create ADMIN (if key matches)    |
+| POST   | `/auth/login`                  | Public      | Login and get JWT                |
+| GET    | `/weather?city=London`         | User/Admin  | Get weather + cache + log        |
+| GET    | `/weather/queries/me`          | User/Admin  | See your own weather queries     |
+| GET    | `/weather/queries/all`         | Admin only  | See all users' queries           |
+| GET    | `/users/all`                   | Admin only  | Dummy admin-only route           |
+
+---
+
+## 🧪 Testing via Postman
+
+1. Register user:
+
+```http
+POST /auth/register
+{
+  "email": "user@example.com",
+  "password": "123456"
+}
 ```
-
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+2.	Register admin:
 ```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+POST /auth/register?adminKey=eLeoVDtwPm5XbphiOM
 ```
+3.	Login:
+````
+POST /auth/login
+````
+4.	Use token in header:
+````
+Authorization: Bearer <access_token>
+`````
 
-## Deployment
+🔧 Setup Instructions
+````
+git clone https://github.com/yourusername/weather-api-case.git
+cd weather-api-case
+npm install
+npm run start:dev
+````
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+🧠 Caching Behavior
+	•	TTL = 300 seconds (5 min)
+	•	Caching done per city key
+	•	Redis Upstash backend (cloud, fast)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+📈 DB Logging (via Prisma)
+	•	All weather requests are logged into WeatherQuery table
+	•	userId, city, timestamp, and raw result stored
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+📌 Notes
+	•	Admins can register users via /auth/register?adminkey=...
+	•	All weather routes require valid token
+	•	Code is modular and uses guards for authorization
+	•	Works out of the box with .env + Postman
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+🙌 Author
 
-## Resources
+Ahmet Emir Arslan
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
