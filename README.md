@@ -1,5 +1,8 @@
 # AppNation – Backend Engineer Case Study ☁️⚡
-#           Weather API Backend
+
+🌐 [Live API Deployment](https://app-nation-case-study-backend-api-production.up.railway.app/)
+
+##           Weather API Backend
 
 This project is a backend application built with NestJS, Prisma, and Redis to demonstrate API integration, caching, and role-based access control.
 
