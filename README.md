@@ -77,22 +77,31 @@ npm install
 npm run start:dev
 ````
 
-🧠 Caching Behavior
-	•	TTL = 300 seconds (5 min)
-	•	Caching done per city key
-	•	Redis Upstash backend (cloud, fast)
+### 🧠 Caching Behavior
 
-📈 DB Logging (via Prisma)
-	•	All weather requests are logged into WeatherQuery table
-	•	userId, city, timestamp, and raw result stored
+- TTL = 300 seconds (5 min)
+- Caching is applied per `city` key
+- Redis (Upstash) used as cloud cache store
 
-📌 Notes
-	•	Admins can register users via /auth/register?adminkey=...
-	•	All weather routes require valid token
-	•	Code is modular and uses guards for authorization
-	•	Works out of the box with .env + Postman
+---
 
-🙌 Author
+### 📈 DB Logging (via Prisma)
 
-Ahmet Emir Arslan
-GitHub → @emirrcodes
+- All weather requests are logged into `WeatherQuery` table
+- Logged fields: `userId`, `city`, `createdAt`, and full `result`
+
+---
+
+### 📌 Notes
+
+- Admins can register users via `/auth/register?adminkey=...`
+- All weather routes require a valid JWT token
+- Role-based guards (`USER`, `ADMIN`) protect sensitive endpoints
+- Runs out of the box using `.env` + Postman
+
+---
+
+### 🙌 Author
+
+Ahmet Emir Arslan  
+[GitHub → @emirrcodes](https://github.com/emirrcodes)
