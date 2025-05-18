@@ -12,7 +12,7 @@ This project is a backend application built with NestJS, Prisma, and Redis to de
 - ⚡ Redis caching via Upstash to reduce redundant API calls
 - 🧾 Logging user queries to PostgreSQL via Prisma
 - 🔐 Role-based route protection (e.g., only admins see all queries)
-- 🧠 `adminkey` query param to allow admin-level user creation via Postman
+- 🧠 `adminKey` query param to allow admin-level user creation via Postman
 - 📦 Modular, clean, and maintainable code structure
 
 ---
