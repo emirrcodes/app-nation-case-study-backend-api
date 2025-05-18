@@ -77,6 +77,16 @@ npm install
 npm run start:dev
 ````
 
+### ✅ Weather Queries Listed
+
+![Weather Query](./screenshots/weathers_query.png)
+
+---
+
+### ✅ Users Listed
+
+![Users](./screenshots/users.png)
+
 ### 🧠 Caching Behavior
 
 - TTL = 300 seconds (5 min)
