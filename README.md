@@ -95,4 +95,4 @@ npm run start:dev
 🙌 Author
 
 Ahmet Emir Arslan
-GitHub → @emirarslan
+GitHub → @emirrcodes
